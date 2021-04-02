@@ -48,16 +48,16 @@ spec:
     spec:
       containers:
       - image: wordpress
-        # imagePullPolicy: Never
+        imagePullPolicy: Never
         name: wordpress
-        env:
-        - name: WORDPRESS_DB_HOST
-          value: wordpress-mysql
-        - name: WORDPRESS_DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-pass
-              key: password
+        # env:
+        # - name: WORDPRESS_DB_HOST
+        #   value: wordpress-mysql
+        # - name: WORDPRESS_DB_PASSWORD
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: mysql-pass
+        #       key: password
         ports:
         - containerPort: 5050
           name: wordpress

@@ -21,27 +21,23 @@ RUN mkdir /www ;\
 RUN mkdir -p /run/nginx ;\
 	mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig ;\
 	mv /srcs/nginx.conf /etc/nginx/ ;\
-	# mv /srcs/index.html /www/ ;\
-	# mv /srcs/phpinfo.php /www/ ;\
 	mv /srcs/php7.sh /etc/profile.d/
 
 RUN mkdir /etc/nginx/ssl ;\
 	openssl req -newkey rsa:4096 -x509 -sha256 -days 3650 -nodes -out \
 	/etc/nginx/ssl/nginx.crt -keyout /etc/nginx/ssl/nginx.key -subj \
-	"/C=FR/ST=Ile de France/L=Paris/O=42/OU=IT Department/CN=www.nginx.com"
+	"/C=FR/ST=Ile de France/L=Paris/O=42/OU=IT Department/CN=www.phpMyAdmin.com"
 
 # install phpmyadmin
 RUN mkdir -p /usr/share/webapps/ ;\
 	cd /usr/share/webapps ;\
-	wget http://files.directadmin.com/services/all/phpMyAdmin/phpMyAdmin-5.0.2-all-languages.tar.gz ;\
-	tar zxvf phpMyAdmin-5.0.2-all-languages.tar.gz ;\
-	rm phpMyAdmin-5.0.2-all-languages.tar.gz ;\
-	mv phpMyAdmin-5.0.2-all-languages phpmyadmin ;\
+	wget http://files.directadmin.com/services/all/phpMyAdmin/phpMyAdmin-5.1.0-all-languages.tar.gz ;\
+	tar zxvf phpMyAdmin-5.1.0-all-languages.tar.gz ;\
+	rm phpMyAdmin-5.1.0-all-languages.tar.gz ;\
+	mv phpMyAdmin-5.1.0-all-languages phpmyadmin ;\
 	chmod -R 777 /usr/share/webapps/ ;\
-	ln -s /usr/share/webapps/phpmyadmin/ /www/phpmyadmin ;\
-	cp /srcs/config.sample.inc.php /usr/share/webapps/phpmyadmin/config.inc.php ;\
-	chown -R www:www /usr/share/webapps/phpmyadmin/ ;\
-	chown -R www:www /www/phpmyadmin
+	ln -s /usr/share/webapps/phpmyadmin/ /var/www/localhost/htdocs/phpmyadmin ;\
+	cp /srcs/config.sample.inc.php /usr/share/webapps/phpmyadmin/config.inc.php
 
 EXPOSE 5000
 

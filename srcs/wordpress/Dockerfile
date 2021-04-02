@@ -28,15 +28,17 @@ RUN mkdir -p /run/nginx ;\
 RUN mkdir /etc/nginx/ssl ;\
 	openssl req -newkey rsa:4096 -x509 -sha256 -days 3650 -nodes -out \
 	/etc/nginx/ssl/nginx.crt -keyout /etc/nginx/ssl/nginx.key -subj \
-	"/C=FR/ST=Ile de France/L=Paris/O=42/OU=IT Department/CN=www.nginx.com"
+	"/C=FR/ST=Ile de France/L=Paris/O=42/OU=IT Department/CN=www.wordpress.com"
 
 # install wordpress
-RUN	cd /www ;\
+RUN	mkdir -p /usr/share/webapps/ ;\
+	cd /usr/share/webapps/ ;\
 	wget http://wordpress.org/latest.tar.gz ;\
 	tar -xzvf latest.tar.gz ;\
 	rm latest.tar.gz ;\
-	cp /srcs/wp-config-sample.php /www/wordpress/wp-config.php;\
-	chown -R www:www /www/wordpress
+	ln -s /usr/share/webapps/wordpress/ /var/www/localhost/htdocs/wordpress;\
+	cp /srcs/wp-config-sample.php /usr/share/webapps/wordpress/wp-config.php;\
+	chown -R www:www /usr/share/webapps/wordpress
 
 CMD ["sh", "/srcs/start.sh"]
 

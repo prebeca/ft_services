@@ -38,11 +38,43 @@
 # mariadb &
 # mysqld --default-authentication-plugin=mysql_native_password
 # sh
-mkdir -p /run/mysqld
-mysql_install_db --user=root
-echo "CREATE DATABASE IF NOT EXISTS wordpress;
-CREATE USER IF NOT EXISTS 'root' IDENTIFIED BY 'password';
-FLUSH PRIVILEGES;
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'password' WITH GRANT OPTION;
-FLUSH PRIVILEGES;" | mysqld -u root --bootstrap
-mysqld -u root
+
+# mkdir -p /run/mysqld
+# mysql_install_db --user=root
+# echo "CREATE DATABASE IF NOT EXISTS wordpress;
+# CREATE USER IF NOT EXISTS 'wp_admin' IDENTIFIED BY 'admin';
+# FLUSH PRIVILEGES;
+# GRANT ALL PRIVILEGES ON *.* TO 'wp_admin'@'%' IDENTIFIED BY 'admin' WITH GRANT OPTION;
+# FLUSH PRIVILEGES;" | mysqld -u root --bootstrap
+# mysqld -u root
+
+# /usr/bin/mysql_install_db --user=mysql
+# /etc/init.d/mariadb start && rc-update add mariadb default
+# /usr/bin/mysqladmin -u root password "$MYSQL_ROOT_PASSWORD"
+# echo "CREATE DATABASE IF NOT EXISTS wordpress;
+# CREATE USER IF NOT EXISTS 'root' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';
+# FLUSH PRIVILEGES;
+# GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD' WITH GRANT OPTION;
+# FLUSH PRIVILEGES;" | mysql -u root -p
+# mysql -u root
+
+openrc
+touch /run/openrc/softlevel
+/etc/init.d/mariadb setup
+sed -i 's/skip-networking/# skip-networking/g' /etc/my.cnf.d/mariadb-server.cnf
+service mariadb restart
+
+mysql --user=root << EOF
+  CREATE DATABASE wordpress;
+  CREATE USER 'wp_user'@'%' IDENTIFIED BY 'user';
+  GRANT ALL ON wordpress.* TO 'wp_user'@'%' IDENTIFIED BY 'user' WITH GRANT OPTION;
+  CREATE USER 'admin'@'%' IDENTIFIED BY 'admin';
+  GRANT ALL ON *.* TO 'admin'@'%' IDENTIFIED BY 'admin' WITH GRANT OPTION;
+  FLUSH PRIVILEGES;
+EOF
+
+mysql --user=root wordpress < /srcs/wordpress.sql
+
+# mysql --user=root
+# sh
+tail -F /dev/null

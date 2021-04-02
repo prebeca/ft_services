@@ -13,7 +13,6 @@ spec:
     app: wordpress
     tier: mysql
   clusterIP: None
-  type: ClusterIP
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -26,7 +25,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 500Mi
+      storage: 1Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -49,14 +48,14 @@ spec:
     spec:
       containers:
       - image: mysql
-        # imagePullPolicy: Never
+        imagePullPolicy: Never
         name: mysql
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-pass
-              key: password
+        # env:
+        # - name: MYSQL_ROOT_PASSWORD
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: mysql-pass
+        #       key: password
         ports:
         - containerPort: 3306
           name: mysql
