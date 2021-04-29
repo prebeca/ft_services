@@ -1,9 +1,11 @@
-FROM alpine:latest
+FROM alpine:3.13
 
 COPY srcs /srcs
 
-RUN apk update && apk add \
+RUN apk add --no-cache\
 	mysql \
+	telegraf \
+	supervisor \
 	mysql-client \
 	openrc
 
@@ -12,13 +14,17 @@ RUN apk update && apk add \
 
 # RUN mv /srcs/my.cnf /etc/my.cnf
 
-# RUN rmdir /var/lib/mysql/
+RUN rmdir /var/lib/mysql/ ;\
+	rmdir /etc/mysql
 
 # RUN chown mysql /var/lib/mysql
 # RUN /usr/bin/mysql_install_db --user=mysql --datadir="/var/lib/mysql"
 
 # RUN openrc ;\
 # 	mkdir /run/mysqld/
+
+RUN mkdir /etc/telegraf/ ;\
+	mv /srcs/telegraf.conf /etc/telegraf/telegraf.conf
 
 CMD ["sh", "/srcs/start.sh"]
 

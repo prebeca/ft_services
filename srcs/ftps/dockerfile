@@ -1,11 +1,10 @@
-FROM alpine:latest
+FROM alpine:3.13
 
-RUN	apk update && apk add \
-			openrc \
+RUN apk add --no-cache\
 			vsftpd \
-			openssl
-
-RUN	rc-update add vsftpd default
+			openssl \
+			telegraf \
+			supervisor
 
 COPY ./srcs/ ./srcs/
 
@@ -17,6 +16,9 @@ RUN openssl req -newkey rsa:4096 \
 	-out /etc/ssl/certs/vsftpd.crt \
 	-keyout /etc/ssl/private/vsftpd.key \
 	-subj "/C=FR/ST=Ile de France/L=Paris/O=42/OU=IT Department/CN=www.vsftpd.com"
+
+RUN mkdir /etc/telegraf/ ;\
+	mv /srcs/telegraf.conf /etc/telegraf/telegraf.conf
 
 CMD ./srcs/start.sh
 
