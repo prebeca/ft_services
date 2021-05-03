@@ -26,7 +26,6 @@ RUN mkdir /www ;\
 RUN mkdir -p /run/nginx ;\
 	mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig ;\
 	mv /srcs/nginx.conf /etc/nginx/
-	# mv /srcs/php7.sh /etc/profile.d/
 
 RUN mkdir /etc/nginx/ssl ;\
 	openssl req -newkey rsa:4096 -x509 -sha256 -days 3650 -nodes -out \

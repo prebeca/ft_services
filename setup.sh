@@ -28,7 +28,7 @@ echo $YELLOW"build and deploy grafana server ... "$END
 docker build -t grafana srcs/grafana
 kubectl apply -f srcs/grafana.yaml
 
-echo $YELLOW"deploy ftps server ... "$END
+echo $YELLOW"build and deploy ftps server ... "$END
 docker build -t ftps srcs/ftps
 kubectl apply -f srcs/ftps.yaml
 

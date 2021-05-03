@@ -12,7 +12,7 @@ spec:
   selector:
     app: grafana
     tier: influxdb
-  clusterIP: None
+  type: ClusterIP
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
